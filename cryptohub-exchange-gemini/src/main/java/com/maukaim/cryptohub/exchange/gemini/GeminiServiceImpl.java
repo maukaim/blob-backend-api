@@ -31,6 +31,11 @@ public class GeminiServiceImpl implements ExchangeService {
     }
 
     @Override
+    public String getExchangeName() {
+        return "Gemini Exchange"
+    }
+
+    @Override
     public List<ConnectionParameter> getConnectionParameters() {
         return List.of(
                 ConnectionParameter.builder()
