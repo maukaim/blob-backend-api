@@ -27,6 +27,11 @@ public class BinanceServiceImpl implements ExchangeService {
     }
 
     @Override
+    public String getExchangeName() {
+        return "Binance Exchange";
+    }
+
+    @Override
     public List<ConnectionParameter> getConnectionParameters() {
         //TODO: Provide ConnectionParameters for Oauth2 and Account access.
         return null;
@@ -49,12 +54,12 @@ public class BinanceServiceImpl implements ExchangeService {
     }
 
     @Override
-    public List<String> getOrderTypes() {
-        return Stream.of(OrderType.values()).map(OrderType::getName).collect(Collectors.toList());
+    public List<String> getOrderTypes(CryptoPair cryptoPair) {
+        return null;
     }
 
     @Override
-    public List<OrderParameter> getOrderParameter(String orderTypeName) throws OrderTypeNotFoundException {
+    public List<OrderParameter> getOrderParameter(String orderTypeName, CryptoPair pair) throws OrderTypeNotFoundException {
         Optional<OrderType> optionalOrderType = OrderType.of(orderTypeName);
         if(optionalOrderType.isPresent()){
             OrderType orderType = optionalOrderType.get();
@@ -67,6 +72,8 @@ public class BinanceServiceImpl implements ExchangeService {
                             String.join(", ", orderTypesAvailable)));
         }
     }
+
+
 
     @Override
     public Collection<Order> getExistingOrders() {

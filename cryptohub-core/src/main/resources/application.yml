@@ -1,3 +1,7 @@
 server:
   port: 10002
 
+
+cryptohub:
+  plugins:
+    directory:

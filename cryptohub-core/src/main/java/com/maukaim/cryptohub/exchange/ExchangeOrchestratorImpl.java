@@ -1,23 +1,27 @@
 package com.maukaim.cryptohub.exchange;
 
 import com.google.common.collect.Maps;
+import com.maukaim.cryptohub.commons.exchanges.model.ConnectionParameter;
+import com.maukaim.cryptohub.commons.module.ExchangeDeclarator;
 import com.maukaim.cryptohub.commons.exchanges.ExchangeService;
+import com.maukaim.cryptohub.exchange.sniffer.ExchangeModuleManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class ExchangeOrchestratorImpl implements ExchangeOrchestrator {
 
-    private final ExchangeSniffer exchangeSniffer;
-    Map<UUID, ExchangeManager> exchangeServiceManagers = Maps.newConcurrentMap();
+    private final ExchangeModuleManager exchangeSniffer;
+    Map<UUID, ExchangeSessionManager> exchangeConnectionManagers = Maps.newConcurrentMap();
 
     @Autowired
-    ExchangeOrchestratorImpl(ExchangeSniffer exchangeDiscoverer){
+    ExchangeOrchestratorImpl(ExchangeModuleManager exchangeDiscoverer){
         this.exchangeSniffer = exchangeDiscoverer;
     }
 
@@ -27,13 +31,18 @@ public class ExchangeOrchestratorImpl implements ExchangeOrchestrator {
     }
 
     @Override
-    public Map<String, ExchangeService> getAllExchangeServices() {
-        return this.exchangeSniffer.getExchangeServices();
+    public Set<String> getAllExchangeServices() {
+        return this.exchangeSniffer.getExchangeLoaders().keySet();
     }
 
     @Override
-    public void discoverExchangeServices() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        this.exchangeSniffer.sniff();
+    public ExchangeSessionManager instantiate(String exchangeName, Map<String, List<ConnectionParameter>>  connectionParameters) {
+        ExchangeDeclarator exchangeLoader = this.exchangeSniffer.getExchangeLoader(exchangeName);
+
+        ExchangeService exchangeService = exchangeLoader.getInstance();
+        ExchangeSessionManager exchangeConnectionManager = new ExchangeSessionManager(exchangeService);
+        this.exchangeConnectionManagers.putIfAbsent(exchangeConnectionManager.getUniqIdentifier(), exchangeConnectionManager);
+        return exchangeConnectionManager;
     }
 
 

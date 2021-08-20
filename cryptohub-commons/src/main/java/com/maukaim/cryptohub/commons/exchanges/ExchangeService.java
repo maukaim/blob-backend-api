@@ -26,10 +26,6 @@ import java.util.Set;
  */
 public interface ExchangeService {
 
-    // Connection to Exchange
-    String getExchangeName();
-
-    List<ConnectionParameter> getConnectionParameters();
     void connect(List<ConnectionParameter> connectionParameters) throws ExchangeConnectionException;
     void disconnect() throws ExchangeDisconnectionException;
 

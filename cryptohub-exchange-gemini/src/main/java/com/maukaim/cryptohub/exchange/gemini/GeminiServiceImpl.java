@@ -21,38 +21,12 @@ import java.util.stream.Stream;
 
 
 public class GeminiServiceImpl implements ExchangeService {
-
     private final GeminiApiConnector geminiApiConnector;
     private final GeminiSocketConnector geminiSocketConnector;
 
     public GeminiServiceImpl() {
         this.geminiApiConnector = new GeminiApiConnectorImpl();
         this.geminiSocketConnector = new GeminiSocketConnector();
-    }
-
-    @Override
-    public String getExchangeName() {
-        return "Gemini Exchange"
-    }
-
-    @Override
-    public List<ConnectionParameter> getConnectionParameters() {
-        return List.of(
-                ConnectionParameter.builder()
-                        .name("Username")
-                        .type(String.class)
-                        .value("your-username")
-                        .required(true)
-                        .description("Username or email used to login on Gemini.")
-                        .build(),
-                ConnectionParameter.builder()
-                        .name("Password")
-                        .type(String.class)
-                        .value("")
-                        .required(true)
-                        .description("Password used to login on Gemini.")
-                        .build()
-        );
     }
 
     @Override
