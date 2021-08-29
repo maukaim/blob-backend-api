@@ -26,12 +26,10 @@ public class BinanceServiceImpl implements ExchangeService {
         this.geminiSocketConnector = new BinanceSocketConnector();
     }
 
-    @Override
     public String getExchangeName() {
         return "Binance Exchange";
     }
 
-    @Override
     public List<ConnectionParameter> getConnectionParameters() {
         //TODO: Provide ConnectionParameters for Oauth2 and Account access.
         return null;

@@ -4,4 +4,6 @@ server:
 
 cryptohub:
   plugins:
-    directory:
+    repository: /Users/julienelkaim/Desktop/plugins
+
+#test: /Users/julienelkaim/Desktop/cryptohub-exchange-gemini-1.0.0-SNAPSHOT.jar

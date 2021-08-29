@@ -65,6 +65,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>com.maukaim.opensource</groupId>
+			<artifactId>cryptohub-plugins-core</artifactId>
+			<version>${global.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>
 			<groupId>commons-io</groupId>

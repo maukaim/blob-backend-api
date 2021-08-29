@@ -12,19 +12,14 @@
     <artifactId>cryptohub-exchange-all</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.maukaim.opensource</groupId>
-            <artifactId>cryptohub-exchange-gemini</artifactId>
-            <version>${application.version}</version>
-            <scope>compile</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>com.maukaim.opensource</groupId>
-            <artifactId>cryptohub-exchange-binance</artifactId>
-            <version>${application.version}</version>
-            <scope>compile</scope>
-        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>com.maukaim.opensource</groupId>-->
+<!--            <artifactId>cryptohub-exchange-binance</artifactId>-->
+<!--            <version>${application.version}</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
 

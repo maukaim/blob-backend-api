@@ -1,31 +1,31 @@
 package com.maukaim.cryptohub.exchange.gemini;
 
-import com.maukaim.cryptohub.commons.exchanges.ExchangeService;
-import com.maukaim.cryptohub.commons.exchanges.exception.ExchangeConnectionException;
-import com.maukaim.cryptohub.commons.exchanges.exception.ExchangeDisconnectionException;
-import com.maukaim.cryptohub.commons.exchanges.listeners.ErrorListener;
-import com.maukaim.cryptohub.commons.exchanges.listeners.MarketDataListener;
-import com.maukaim.cryptohub.commons.exchanges.listeners.OrderUpdateListener;
-import com.maukaim.cryptohub.commons.exchanges.model.ConnectionParameter;
-import com.maukaim.cryptohub.commons.exchanges.model.CryptoPair;
+import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeService;
+import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeServicePreProcess;
+import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeConnectionException;
+import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeDisconnectionException;
+import com.maukaim.cryptohub.plugins.api.exchanges.listeners.ErrorListener;
+import com.maukaim.cryptohub.plugins.api.exchanges.listeners.MarketDataListener;
+import com.maukaim.cryptohub.plugins.api.exchanges.listeners.OrderUpdateListener;
+import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameter;
+import com.maukaim.cryptohub.plugins.api.exchanges.model.CryptoPair;
 import com.maukaim.cryptohub.exchange.gemini.order.OrderParameterFactory;
 import com.maukaim.cryptohub.exchange.gemini.order.OrderType;
-import com.maukaim.cryptohub.commons.exchanges.exception.OrderTypeNotFoundException;
-import com.maukaim.cryptohub.commons.order.Order;
-import com.maukaim.cryptohub.commons.order.OrderParameter;
+import com.maukaim.cryptohub.plugins.api.exchanges.exception.OrderTypeNotFoundException;
+import com.maukaim.cryptohub.plugins.api.order.Order;
+import com.maukaim.cryptohub.plugins.api.order.OrderParameter;
 import com.maukaim.cryptohub.exchange.gemini.symbol.SymbolDetails;
+import com.maukaim.cryptohub.plugins.api.plugin.HasPreProcess;
 
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
+@HasPreProcess(GeminiPreProcess.class)
 public class GeminiServiceImpl implements ExchangeService {
-    private final GeminiApiConnector geminiApiConnector;
     private final GeminiSocketConnector geminiSocketConnector;
 
     public GeminiServiceImpl() {
-        this.geminiApiConnector = new GeminiApiConnectorImpl();
         this.geminiSocketConnector = new GeminiSocketConnector();
     }
 
@@ -42,8 +42,8 @@ public class GeminiServiceImpl implements ExchangeService {
 
     @Override
     public Set<CryptoPair> getAvailableSymbols() {
-        List<String> allSymbols = this.geminiApiConnector.getAllSymbols();
-        List<SymbolDetails> symbolsDetails = this.geminiApiConnector.getSymbolsDetails(allSymbols);
+        List<String> allSymbols = Collections.EMPTY_LIST; //this.geminiApiConnector.getAllSymbols();
+        List<SymbolDetails> symbolsDetails = Collections.EMPTY_LIST; // this.geminiApiConnector.getSymbolsDetails(allSymbols);
         return symbolsDetails.stream()
                 .map(symbolDetails -> CryptoPair.builder()
                         .symbol(symbolDetails.getSymbol())

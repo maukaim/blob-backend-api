@@ -1,7 +1,7 @@
 package com.maukaim.cryptohub.exchange.gemini.order;
 
-import com.maukaim.cryptohub.commons.exchanges.model.CryptoPair;
-import com.maukaim.cryptohub.commons.order.OrderParameter;
+import com.maukaim.cryptohub.plugins.api.exchanges.model.CryptoPair;
+import com.maukaim.cryptohub.plugins.api.order.OrderParameter;
 
 import java.math.BigDecimal;
 import java.util.List;
