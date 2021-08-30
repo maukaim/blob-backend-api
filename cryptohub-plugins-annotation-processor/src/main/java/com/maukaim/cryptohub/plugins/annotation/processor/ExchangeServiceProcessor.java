@@ -1,8 +1,8 @@
-package com.maukaim.cryptohub.plugins.api.exchanges;
+package com.maukaim.cryptohub.plugins.annotation.processor;
 
 import com.google.auto.service.AutoService;
-import com.maukaim.cryptohub.plugins.api.plugin.AbstractHasPreProcessProcessor;
-import com.maukaim.cryptohub.plugins.api.plugin.PreProcess;
+import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeService;
+import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeServicePreProcess;
 
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -13,7 +13,7 @@ import javax.lang.model.element.Modifier;
 
 @SupportedAnnotationTypes("*")
 @AutoService(Processor.class)
-public class ExchangeServiceHasPreProcessProcessor extends AbstractHasPreProcessProcessor<ExchangeService, PreProcess> {
+public class ExchangeServiceProcessor extends AbstractModuleProcessor<ExchangeService, ExchangeServicePreProcess> {
 
     @Override
     public Class<ExchangeService> getModuleClass() {
@@ -21,14 +21,24 @@ public class ExchangeServiceHasPreProcessProcessor extends AbstractHasPreProcess
     }
 
     @Override
-    public Class<? extends PreProcess> getPreProcessClass() { return ExchangeServicePreProcess.class; }
+    public Class<ExchangeServicePreProcess> getPreProcessClass() { return ExchangeServicePreProcess.class; }
 
     @Override
-    protected void checkPreProcessConstructor(Element ppAnnotationAsElement) {
-        if(!hasPublicNoArgsConstructor(ppAnnotationAsElement)){
-            errorMessage(ppAnnotationAsElement,
-                    "%s has to provide public empty and public constructor.",
-                    ppAnnotationAsElement.getSimpleName());
+    protected boolean havingAModuleDeclaratorIsMandatory() {
+        return true;
+    }
+
+    @Override
+    protected boolean havingPreProcessIsMandatory() {
+        return true;
+    }
+
+    @Override
+    protected void checkPreProcessConstructor(Element ppAsElement) {
+        if(!hasPublicNoArgsConstructor(ppAsElement)){
+            errorMessage(ppAsElement,
+                    "%s has to provide a public no-args constructor.",
+                    ppAsElement.getSimpleName());
         }
     }
 

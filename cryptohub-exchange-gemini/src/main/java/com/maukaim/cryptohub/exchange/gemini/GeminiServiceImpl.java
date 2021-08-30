@@ -1,20 +1,19 @@
 package com.maukaim.cryptohub.exchange.gemini;
 
+import com.maukaim.cryptohub.exchange.gemini.order.OrderParameterFactory;
+import com.maukaim.cryptohub.exchange.gemini.order.OrderType;
+import com.maukaim.cryptohub.exchange.gemini.symbol.SymbolDetails;
 import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeService;
-import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeServicePreProcess;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeConnectionException;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeDisconnectionException;
+import com.maukaim.cryptohub.plugins.api.exchanges.exception.OrderTypeNotFoundException;
 import com.maukaim.cryptohub.plugins.api.exchanges.listeners.ErrorListener;
 import com.maukaim.cryptohub.plugins.api.exchanges.listeners.MarketDataListener;
 import com.maukaim.cryptohub.plugins.api.exchanges.listeners.OrderUpdateListener;
 import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameter;
 import com.maukaim.cryptohub.plugins.api.exchanges.model.CryptoPair;
-import com.maukaim.cryptohub.exchange.gemini.order.OrderParameterFactory;
-import com.maukaim.cryptohub.exchange.gemini.order.OrderType;
-import com.maukaim.cryptohub.plugins.api.exchanges.exception.OrderTypeNotFoundException;
 import com.maukaim.cryptohub.plugins.api.order.Order;
 import com.maukaim.cryptohub.plugins.api.order.OrderParameter;
-import com.maukaim.cryptohub.exchange.gemini.symbol.SymbolDetails;
 import com.maukaim.cryptohub.plugins.api.plugin.HasPreProcess;
 
 import java.util.*;
