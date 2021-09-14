@@ -1,7 +1,6 @@
 package com.maukaim.cryptohub.plugins.core.model;
 
 import com.maukaim.cryptohub.plugins.api.plugin.Module;
-import com.maukaim.cryptohub.plugins.api.plugin.PluginConfig;
 import com.maukaim.cryptohub.plugins.core.model.module.ModuleProvider;
 
 import java.io.IOException;
@@ -34,9 +33,10 @@ public class PluginFactory {
 
         Attributes mainAttributes = manifest.getMainAttributes();
         return PluginInfo.builder()
+                .pluginId(getOrElse(mainAttributes, PluginConfig.PLUGIN_ID, null))
+                .name(getOrElse(mainAttributes, PluginConfig.PLUGIN_NAME, null))
                 .author(getOrElse(mainAttributes, PluginConfig.PLUGIN_AUTHOR, null))
                 .description(getOrElse(mainAttributes, PluginConfig.PLUGIN_DESCRIPTION, "No description."))
-                .name(getOrElse(mainAttributes, PluginConfig.PLUGIN_NAME, null))
                 .version(getOrElse(mainAttributes, PluginConfig.PLUGIN_VERSION, null))
                 .build();
     }

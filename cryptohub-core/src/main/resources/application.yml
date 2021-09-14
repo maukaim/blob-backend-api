@@ -1,9 +1,12 @@
 server:
-  port: 10002
+  port: 10003
+
+maukaim:
+  swagger:
+    enabled: true
 
 
 cryptohub:
   plugins:
     repository: /Users/julienelkaim/Desktop/plugins
 
-#test: /Users/julienelkaim/Desktop/cryptohub-exchange-gemini-1.0.0-SNAPSHOT.jar

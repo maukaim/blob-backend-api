@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Generic Parameter characteristics
+ */
 @SuperBuilder
 @Data
 @NoArgsConstructor

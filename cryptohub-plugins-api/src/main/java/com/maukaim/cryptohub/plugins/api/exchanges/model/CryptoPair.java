@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+
+/**
+ * Model for Crypto currency symbols
+ */
 @Builder
 @Data
 @NoArgsConstructor

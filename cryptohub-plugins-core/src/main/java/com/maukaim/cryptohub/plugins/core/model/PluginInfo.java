@@ -17,9 +17,6 @@ public class PluginInfo {
     private String name;
     private String author;
     private String description;
-    private String version; //TODO: Change into Version from java-semver, or own impl of it.
+    private String version; //Should switch to Version from java-semver, or own impl of it.
 
-    public String getId(){
-        return this.getName();
-    }
 }

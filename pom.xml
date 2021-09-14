@@ -21,17 +21,18 @@
 
 	<modules>
 		<module>cryptohub-core</module>
-		<module>cryptohub-commons</module>
-
-		<module>cryptohub-exchange-gemini</module>
-<!--		<module>cryptohub-exchange-binance</module>-->
-		<module>cryptohub-exchange-all</module>
-
 		<module>cryptohub-plugins-core</module>
+
         <module>cryptohub-plugins-api</module>
         <module>cryptohub-plugins-annotation-processor</module>
+
 		<module>cryptohub-plugins-starter</module>
-	</modules>
+		<module>cryptohub-plugins-parent</module>
+
+		<module>cryptohub-exchange-gemini</module>
+        <module>cryptohub-swagger</module>
+
+    </modules>
 
 
 </project>

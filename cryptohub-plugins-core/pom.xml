@@ -46,6 +46,12 @@
             <version>2.11.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.maukaim.opensource</groupId>
+            <artifactId>cryptohub-plugins-starter</artifactId>
+            <version>${application.version}</version>
+        </dependency>
+
     </dependencies>
 
 <!--

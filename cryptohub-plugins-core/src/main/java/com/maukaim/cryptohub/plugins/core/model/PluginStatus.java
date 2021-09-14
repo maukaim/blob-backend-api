@@ -1,6 +1,8 @@
 package com.maukaim.cryptohub.plugins.core.model;
 
 
+import java.util.Objects;
+
 public enum PluginStatus {
     /**
      * Plugin has been created, but not yet resolved.
@@ -9,8 +11,8 @@ public enum PluginStatus {
     CREATED,
 
     /**
-     * All the dependencies are now created and resolved.
-     * Can now be started, meaning turned into {@code ENABLED}
+     * Has been preprocessed successfully just after loading.
+     * Can now be started, meaning go to {@code ENABLED}.
      */
     AVAILABLE,
 
@@ -29,5 +31,22 @@ public enum PluginStatus {
     /**
      * Error happened while starting the plugin.
      */
-    ERROR
+    ERROR;
+
+    public boolean isStarted() {
+        return this == ENABLED;
+    }
+
+    public boolean canBeStarted() {
+        return !(isStarted() || Objects.equals(CREATED, this));
+    }
+
+    public boolean canBeStopped() {
+        return isStarted();
+    }
+
+    public boolean isDestroyable() {
+        return !isStarted();
+
+    }
 }

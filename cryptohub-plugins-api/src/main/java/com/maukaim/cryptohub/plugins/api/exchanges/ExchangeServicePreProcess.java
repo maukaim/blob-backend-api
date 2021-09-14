@@ -6,6 +6,9 @@ import com.maukaim.cryptohub.plugins.api.plugin.PreProcess;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Used before initiating Exchange Services.
+ */
 public interface ExchangeServicePreProcess extends PreProcess {
     /**
      *  Used by ExchangeServices consumers to connect with it.

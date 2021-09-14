@@ -1,11 +1,14 @@
 package com.maukaim.cryptohub.plugins.annotation.processor;
 
+import com.google.auto.common.MoreElements;
+import com.maukaim.cryptohub.plugins.annotation.processor.utils.FileSystemHelper;
 import com.maukaim.cryptohub.plugins.api.plugin.HasPreProcess;
 import com.maukaim.cryptohub.plugins.api.plugin.Module;
 import com.maukaim.cryptohub.plugins.api.plugin.ModuleDeclarator;
 import com.maukaim.cryptohub.plugins.api.plugin.PreProcess;
 
 import javax.annotation.processing.AbstractProcessor;
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.*;
@@ -14,11 +17,22 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-import java.util.Objects;
-import java.util.Set;
+import javax.tools.FileObject;
+import javax.tools.StandardLocation;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.util.*;
 
 
 public abstract class AbstractModuleProcessor<M extends Module, PPP extends PreProcess> extends AbstractProcessor implements ModuleProcessor<M, PPP> {
+
+    private final String META_INF = "META-INF";
+    private final String SERVICE_FOLDER = "services";
+
+    List<String> moduleServiceProviders = new ArrayList<>();
+
+
     @Override
     public SourceVersion getSupportedSourceVersion() {
         return SourceVersion.latestSupported();
@@ -42,18 +56,48 @@ public abstract class AbstractModuleProcessor<M extends Module, PPP extends PreP
                            Set<? extends TypeElement> annotationRequested, RoundEnvironment roundEnv) {
 
         if (roundEnv.processingOver()) {
-            return false;
-        }
-        TypeMirror moduleAsTypeMirror = this.getElementUtils().getTypeElement(moduleBoundClass.getCanonicalName()).asType();
-        TypeMirror preProcessProvidedAsTypeMirror = this.getElementUtils().getTypeElement(preProcessBoundClass.getCanonicalName()).asType();
+            this.createModuleServiceProviderFile();
 
-        Set<? extends Element> allElements = roundEnv.getRootElements();
-        for (Element elt : allElements) {
-            if (elt.getKind().isClass() && this.getTypeUtils().isAssignable(elt.asType(), moduleAsTypeMirror)) {
-                this.processModuleElement(elt, preProcessProvidedAsTypeMirror);
+        } else {
+            TypeMirror moduleAsTypeMirror = this.getElementUtils().getTypeElement(moduleBoundClass.getCanonicalName()).asType();
+            TypeMirror preProcessProvidedAsTypeMirror = this.getElementUtils().getTypeElement(preProcessBoundClass.getCanonicalName()).asType();
+
+            Set<? extends Element> allElements = roundEnv.getRootElements();
+            for (Element elt : allElements) {
+                if (elt.getKind().isClass() && this.getTypeUtils().isAssignable(elt.asType(), moduleAsTypeMirror)) {
+                    this.processModuleElement(elt, preProcessProvidedAsTypeMirror);
+                }
             }
         }
         return false;
+    }
+
+    private void createModuleServiceProviderFile() {
+
+        if (!this.moduleServiceProviders.isEmpty()) {
+            Filer filer = processingEnv.getFiler();
+            String moduleServiceProviderPath = Path.of(META_INF, SERVICE_FOLDER,
+                    Module.class.getCanonicalName()).toString();
+            Set<String> allModuleServiceProviders = new HashSet<>(this.moduleServiceProviders);
+
+            try {
+                FileObject configFile = filer.getResource(StandardLocation.CLASS_OUTPUT, "",
+                        moduleServiceProviderPath);
+                allModuleServiceProviders.addAll(FileSystemHelper
+                        .readInputStreamLines(configFile.openInputStream()));
+
+            } catch (IOException ignored) {
+            }
+
+            try {
+                FileObject createdConfigFile = filer.createResource(StandardLocation.CLASS_OUTPUT, "",
+                        moduleServiceProviderPath);
+                FileSystemHelper.writeLinesAndClose(createdConfigFile.openOutputStream(), allModuleServiceProviders);
+
+            } catch (IOException e) {
+                warningMessage(null, "Impossible to create or write on service-file %s .", moduleServiceProviderPath);
+            }
+        }
     }
 
     protected final String getSimpleName(TypeMirror t) {
@@ -71,19 +115,28 @@ public abstract class AbstractModuleProcessor<M extends Module, PPP extends PreP
 
     private void processModuleDeclaratorAnnotation(Element elt) {
         ModuleDeclarator moduleDeclaratorAnnotation = elt.getAnnotation(ModuleDeclarator.class);
+
         if (Objects.isNull(moduleDeclaratorAnnotation) && this.havingAModuleDeclaratorIsMandatory()) {
             errorMessage(elt,
                     "%s should be annotated with @%s.",
                     elt.getSimpleName(), ModuleDeclarator.class.getSimpleName());
 
         } else if (Objects.nonNull(moduleDeclaratorAnnotation)) {
+            this.addElementToServiceProviders(elt);
             this.checkModuleDeclaratorAnnotationValidity(elt, moduleDeclaratorAnnotation);
         }
     }
 
+    private void addElementToServiceProviders(Element elt) {
+        TypeElement typeElement = MoreElements.asType(elt);
+        String eltBinaryName = this.getElementUtils().getBinaryName(typeElement).toString();
+        this.moduleServiceProviders.add(eltBinaryName);
+
+    }
+
     protected void checkModuleDeclaratorAnnotationValidity(Element elt, ModuleDeclarator moduleDeclaratorAnnotation) {
         this.noteMessage(elt, "%s does not implement checks on annotation @%s for module %s.",
-                 this.getClass().getSimpleName(), ModuleDeclarator.class.getSimpleName(), elt.getSimpleName());
+                this.getClass().getSimpleName(), ModuleDeclarator.class.getSimpleName(), elt.getSimpleName());
 
     }
 
@@ -162,7 +215,7 @@ public abstract class AbstractModuleProcessor<M extends Module, PPP extends PreP
     }
 
     protected void noteMessage(Element element, String message, Object... args) {
-        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, String.format(message, args), element);
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, String.format(message, args), element);
     }
 
     protected void warningMessage(Element element, String message, Object... args) {

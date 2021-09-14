@@ -18,7 +18,7 @@ public class Plugin {
     private PluginInfo info;
     private Path pluginPath;
     private ClassLoader pluginClassLoader;
-    private List<ModuleProvider<Module>> moduleProviders;
+    private List<ModuleProvider<? extends Module>> moduleProviders;
     private PluginStatus status;
 
     @Override
@@ -29,7 +29,7 @@ public class Plugin {
 
         if(this.getClass().equals(other.getClass())){
             Plugin otherTyped = (Plugin) other;
-            return this.getInfo().getId().equals(otherTyped.getInfo().getId());
+            return this.getInfo().getPluginId().equals(otherTyped.getInfo().getPluginId());
         }
 
         return false;

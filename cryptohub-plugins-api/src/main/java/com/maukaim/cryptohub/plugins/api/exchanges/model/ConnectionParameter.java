@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Parameter to connect with an Exchange
+ */
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor

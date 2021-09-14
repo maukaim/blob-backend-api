@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.2</version>
+		<version>2.4.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>com.maukaim.opensource</groupId>
 	<artifactId>cryptohub-core</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${global.version}</version>
 	<name>Cryptohub-core</name>
 	<description>Automated Trading platform for cryptocurrencies.</description>
 
@@ -23,9 +23,11 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-oauth2-client</artifactId>
+			<scope>compile</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -34,7 +36,19 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<optional>true</optional>
+			<version>1.18.20</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.maukaim.opensource</groupId>
+			<artifactId>cryptohub-plugins-starter</artifactId>
+			<version>${global.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.maukaim.opensource</groupId>
+			<artifactId>cryptohub-swagger</artifactId>
+			<version>${global.version}</version>
 		</dependency>
 
 		<dependency>
@@ -51,16 +65,10 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>com.maukaim.opensource</groupId>
-			<artifactId>cryptohub-commons</artifactId>
-			<version>${global.version}</version>
-			<scope>compile</scope>
-		</dependency>
 
 		<dependency>
 			<groupId>com.maukaim.opensource</groupId>
-			<artifactId>cryptohub-exchange-all</artifactId>
+			<artifactId>cryptohub-plugins-core</artifactId>
 			<version>${global.version}</version>
 			<scope>compile</scope>
 		</dependency>
