@@ -1,8 +1,6 @@
 package com.maukaim.cryptohub.plugins.api.plugin;
 
-import com.google.auto.service.AutoService;
 
-import javax.annotation.processing.Processor;
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
