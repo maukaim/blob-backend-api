@@ -13,43 +13,6 @@
     <name>Cryptohub Plugins API</name>
     <description>Interfaces and classes to be used by plugins developers for Cryptohub platform.</description>
 
-
-    <!--    Meta data for Maven Central -->
-    <url>https://github.com/maukaim/cryptohub-backend-api</url>
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
-    </licenses>
-    <developers>
-        <developer>
-            <name>Julien Elkaim</name>
-            <email>julienelk@gmail.com</email>
-            <organization>Maukaim</organization>
-            <organizationUrl>https://github.com/JulienElkaim</organizationUrl>
-        </developer>
-    </developers>
-    <scm>
-        <connection>scm:git:git://github.com/maukaim/cryptohub-backend-api.git</connection>
-        <developerConnection>scm:git:ssh://github.com:maukaim/cryptohub-backend-api.git</developerConnection>
-        <url>http://github.com/maukaim/cryptohub-backend-api/tree/master</url>
-    </scm>
-
-
-    <!--    Repositories to use when deploying-->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>SonatypeOSSRH</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-        <repository>
-            <id>SonatypeOSSRH</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -61,6 +24,16 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <configuration>
+                        <skip>false</skip>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -102,9 +75,7 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
 
 </project>

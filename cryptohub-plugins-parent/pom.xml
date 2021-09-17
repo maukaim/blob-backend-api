@@ -7,6 +7,8 @@
         <groupId>com.maukaim.opensource</groupId>
         <version>${revision}</version>
     </parent>
+
+<!--    TODO: switch to a maven archetype !-->
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cryptohub-plugins-parent</artifactId>
