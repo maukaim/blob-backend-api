@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cryptohub</artifactId>
         <groupId>com.maukaim.opensource</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.maukaim.opensource</groupId>
             <artifactId>cryptohub-plugins-starter</artifactId>
-            <version>${application.version}</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

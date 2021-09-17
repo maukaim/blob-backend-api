@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<!--    These properties will be inherited from child modules-->
-	<properties>
-		<java.version>14</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
-		<application.version>1.0.0-SNAPSHOT</application.version>
-		<spring.version>2.5.2</spring.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+    <properties>
+        <revision>1.0.0-SNAPSHOT</revision>
+        <java.version>14</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <spring.version>2.5.2</spring.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-	<groupId>com.maukaim.opensource</groupId>
-	<artifactId>cryptohub</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>pom</packaging>
-	<name>Cryptohub</name>
+    <groupId>com.maukaim.opensource</groupId>
+    <artifactId>cryptohub</artifactId>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <name>Cryptohub</name>
 
-	<modules>
-		<module>cryptohub-core</module>
-		<module>cryptohub-plugins-core</module>
+    <modules>
+        <module>cryptohub-core</module>
+        <module>cryptohub-plugins-core</module>
 
         <module>cryptohub-plugins-api</module>
         <module>cryptohub-plugins-annotation-processor</module>
 
-		<module>cryptohub-plugins-starter</module>
-		<module>cryptohub-plugins-parent</module>
+        <module>cryptohub-plugins-starter</module>
+        <module>cryptohub-plugins-parent</module>
 
-		<module>cryptohub-exchange-gemini</module>
+        <module>cryptohub-exchange-gemini</module>
         <module>cryptohub-swagger</module>
 
     </modules>
