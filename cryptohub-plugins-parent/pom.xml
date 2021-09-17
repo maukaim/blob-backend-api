@@ -5,8 +5,10 @@
     <parent>
         <artifactId>cryptohub</artifactId>
         <groupId>com.maukaim.opensource</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
+
+<!--    TODO: switch to a maven archetype !-->
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>cryptohub-plugins-parent</artifactId>
@@ -24,7 +26,7 @@
         <dependency>
             <groupId>com.maukaim.opensource</groupId>
             <artifactId>cryptohub-plugins-starter</artifactId>
-            <version>${application.version}</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

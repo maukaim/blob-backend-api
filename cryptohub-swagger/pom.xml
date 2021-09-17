@@ -17,7 +17,7 @@
 
     <properties>
         <springfox.version>3.0.0</springfox.version>
-        <global.version>1.0.0-SNAPSHOT</global.version>
+        <global.version>1.0.6-SNAPSHOT</global.version>
     </properties>
     <dependencies>
 
@@ -94,6 +94,20 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <configuration>
+                        <skip>true</skip>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
 
 
 </project>
