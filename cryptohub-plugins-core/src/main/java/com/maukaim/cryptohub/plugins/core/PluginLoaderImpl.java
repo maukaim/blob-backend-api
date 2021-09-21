@@ -20,7 +20,7 @@ public class PluginLoaderImpl implements PluginLoader {
     @Override
     public PluginLoadResult loadPlugins(Set<File> jarFiles) {
         if (jarFiles.isEmpty()) {
-            return PluginLoadResult.builder().nbOfJars(0).build();
+            return PluginLoadResult.EMPTY;
         }
 
         List<Plugin> pluginsLoaded = new ArrayList<>();

@@ -7,7 +7,11 @@ import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeConnectionE
 import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameter;
 import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameters;
 import com.maukaim.cryptohub.plugins.api.plugin.PreProcess;
+import com.maukaim.cryptohub.plugins.core.PluginLifeCycleException;
+import com.maukaim.cryptohub.plugins.core.PluginLifeCycleListener;
 import com.maukaim.cryptohub.plugins.core.PluginService;
+import com.maukaim.cryptohub.plugins.core.model.Plugin;
+import com.maukaim.cryptohub.plugins.core.model.PluginStatus;
 import com.maukaim.cryptohub.plugins.core.model.module.ModuleInfo;
 import com.maukaim.cryptohub.plugins.core.model.module.ModuleProvider;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestrator {
+public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestrator, PluginLifeCycleListener {
     private ExchangeServiceFactory factory;
     private PluginService pluginService;
 
@@ -82,10 +86,10 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
         ExchangeService exchangeService = this.factory.build(mp);
         ExchangeWrapper wrapper = this.factory.wrap(exchangeService, connectionParameters);
         exchangeService.listenConnection(wrapper);
-
         exchangeService.connect(connectionParameters);
 
         this.wrappersCached.putIfAbsent(wrapper.getId(), wrapper);
+        this.pluginService.addLifeCycleListener(this, mp);
         return wrapper;
     }
 
@@ -102,5 +106,25 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
                     return moduleInfo.getName().equalsIgnoreCase(exchangeName) &&
                             moduleInfo.getPlugin().getInfo().getPluginId().equalsIgnoreCase(pluginId);
                 }).findFirst();
+    }
+
+    @Override
+    public void beforeStatusChange(Plugin plugin, PluginStatus current, PluginStatus next) throws PluginLifeCycleException {
+        //TODO: If error or stopping, send warning message to the WrapperId listeners. Possible to block until response of all or timeout?
+    }
+
+    @Override
+    public void beforeDestroy(Plugin plugin) throws PluginLifeCycleException {
+        //TODO: If destroying, send warning message to the WrapperId listeners. Possible to block until response of all or timeout?
+    }
+
+    @Override
+    public void afterStatusChanged(Plugin plugin, PluginStatus old, PluginStatus current) {
+        //TODO: Destroy wrapper of Exchange Modules using it
+    }
+
+    @Override
+    public void afterDestroy(Plugin plugin) {
+        //TODO: Destroy wrapper of exchange Modules using it.
     }
 }

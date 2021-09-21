@@ -10,6 +10,7 @@ import com.maukaim.cryptohub.plugins.core.model.module.ModuleProvider;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -43,13 +44,13 @@ public class PluginServiceImpl implements PluginService {
     @Setter
     private List<Path> pluginRoots;
 
-    public PluginServiceImpl(@Value("cryptohub.plugins.repository") String repository,
+    public PluginServiceImpl(@Value("${cryptohub.plugins.repository}") String repository,
                              PluginRepository pluginRepository, PluginLoader pluginLoader) {
         this.pluginRepository = pluginRepository;
         this.pluginLoader = pluginLoader;
+        repository = Strings.nullToEmpty(repository);
 
-        //TODO: En faire une injection de property Spring
-        this.pluginRoots = List.of(Paths.get("/Users/julienelkaim/Desktop/plugins"));
+        this.pluginRoots = Strings.isNullOrEmpty(repository)? new ArrayList<>(): List.of(Paths.get(repository));
         this.autoEnableListener = new PluginAutoEnableListener(this.getPluginRepository());
 
     }
@@ -252,7 +253,7 @@ public class PluginServiceImpl implements PluginService {
     }
 
     @Override
-    public void addLifeCycleListener(PluginLifeCycleListener listener, ModuleProvider<Module> module) {
+    public void addLifeCycleListener(PluginLifeCycleListener listener, ModuleProvider<? extends Module> module) {
         String pluginId = module.getModuleInfo().getPlugin().getInfo().getPluginId();
         this.addLifeCycleListener(listener, pluginId);
     }
