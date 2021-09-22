@@ -30,14 +30,17 @@ import java.util.stream.Collectors;
 public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestrator, PluginLifeCycleListener {
     private ExchangeServiceFactory factory;
     private PluginService pluginService;
+    private ExchangeDataDispatcher dataSender;
 
     private Map<String, ExchangeWrapper> wrappersCached = Maps.newConcurrentMap();
 
     public ExchangeServiceOrchestratorImpl(
             @Autowired ExchangeServiceFactory factory,
-            @Autowired PluginService pluginService) {
+            @Autowired PluginService pluginService,
+            @Autowired ExchangeDataDispatcher sender) {
         this.pluginService = pluginService;
         this.factory = factory;
+        this.dataSender = sender;
     }
 
     @PostConstruct
@@ -84,8 +87,8 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
     public ExchangeWrapper connect(ModuleProvider<? extends ExchangeService> mp,
                                    ConnectionParameters connectionParameters) throws ExchangeConnectionException {
         ExchangeService exchangeService = this.factory.build(mp);
-        ExchangeWrapper wrapper = this.factory.wrap(exchangeService, connectionParameters);
-        exchangeService.listenConnection(wrapper);
+        ExchangeWrapper wrapper = this.factory.wrap(exchangeService, connectionParameters, this.dataSender);
+
         exchangeService.connect(connectionParameters);
 
         this.wrappersCached.putIfAbsent(wrapper.getId(), wrapper);

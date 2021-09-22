@@ -1,5 +1,6 @@
 package com.maukaim.cryptohub.plugins.api.exchanges;
 
+import com.maukaim.cryptohub.plugins.api.exchanges.listeners.ExchangeServiceListener;
 import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameters;
 import com.maukaim.cryptohub.plugins.api.plugin.Module;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeConnectionException;
@@ -26,10 +27,10 @@ import java.util.Set;
  *
  */
 public interface ExchangeService extends Module {
+    void setExchangeListener(ExchangeServiceListener listener);
 
     void connect(ConnectionParameters connectionParameters) throws ExchangeConnectionException;
     void disconnect();
-    void listenConnection(ConnectionListener listener);
 
     // Symbols management
 
@@ -44,8 +45,6 @@ public interface ExchangeService extends Module {
     Optional<Order> cancelOrder(Order order);
     Optional<Order> updateOrder(Order order);
 
-    void subscribeOnOrderUpdate(OrderUpdateListener listener);
-    // MarketData management
-    void subscribeOnMarketData(MarketDataListener listener, CryptoPair symbol);
+
 
 }

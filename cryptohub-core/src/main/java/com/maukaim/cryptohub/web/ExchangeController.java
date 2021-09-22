@@ -1,6 +1,5 @@
 package com.maukaim.cryptohub.web;
 
-import com.maukaim.cryptohub.web.sse.SseService;
 import com.maukaim.cryptohub.web.view.ModuleInfoView;
 import com.maukaim.cryptohub.web.view.ModuleInfoViewFactory;
 import com.maukaim.cryptohub.exchange.ExchangeWrapper;
