@@ -10,8 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>blob-plugins-starter</artifactId>
-    <name>Blob Plugins Starter</name>
-<!--    <packaging>pom</packaging>-->
+    <name>Blob Plugins All Dependencies</name>
     <description>Provides the necessary dependencies to build a Blob plugin.</description>
 
 
