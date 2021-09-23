@@ -1,5 +1,6 @@
 package com.maukaim.cryptohubplugins.exchange.blob;
 
+import com.maukaim.cryptohub.plugins.api.exchanges.AbstractExchangeService;
 import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeService;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeConnectionException;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.OrderTypeNotFoundException;
@@ -8,6 +9,7 @@ import com.maukaim.cryptohub.plugins.api.exchanges.listeners.MarketDataListener;
 import com.maukaim.cryptohub.plugins.api.exchanges.listeners.OrderUpdateListener;
 import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameters;
 import com.maukaim.cryptohub.plugins.api.exchanges.model.CryptoPair;
+import com.maukaim.cryptohub.plugins.api.market.model.MarketData;
 import com.maukaim.cryptohub.plugins.api.order.Order;
 import com.maukaim.cryptohub.plugins.api.order.OrderParameter;
 import com.maukaim.cryptohub.plugins.api.plugin.HasPreProcess;
@@ -15,23 +17,47 @@ import com.maukaim.cryptohub.plugins.api.plugin.ModuleDeclarator;
 import com.maukaim.cryptohubplugins.exchange.blob.order.OrderParameterFactory;
 import com.maukaim.cryptohubplugins.exchange.blob.order.OrderType;
 import com.maukaim.cryptohubplugins.exchange.blob.symbol.SymbolDetails;
+import lombok.extern.slf4j.Slf4j;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @HasPreProcess(BlobExchangePreProcess.class)
 @ModuleDeclarator(name = "Blob Exchange",
         description = "Provides socket and API connection capability to Blob Exchange.")
-public class BlobExchangeServiceImpl implements ExchangeService {
+public class BlobExchangeServiceImpl extends AbstractExchangeService {
 
     public BlobExchangeServiceImpl() {
     }
 
     @Override
     public void connect(ConnectionParameters connectionParameters) throws ExchangeConnectionException {
-        //TODO: Connect to SOCKET and test connection to Oauth2 API
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(() -> {
+            this.getExchangeServiceListener().onMarketData(
+                    MarketData.builder()
+                            .ask(fakePrice(120.4D, 130.6D))
+                            .bid(BigDecimal.valueOf(1))
+                            .symbol("hehe")
+                            .time(LocalDateTime.now())
+                            .build());
+        }, 1000, 250, TimeUnit.MILLISECONDS);
+    }
 
+    private BigDecimal fakePrice(Double min, Double max) {
+        BigDecimal maxB = BigDecimal.valueOf(max);
+        BigDecimal minB = BigDecimal.valueOf(min);
+        BigDecimal randomBigDecimal = minB.add(BigDecimal.valueOf(Math.random())
+                .multiply(maxB.subtract(minB)));
+        return randomBigDecimal.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -96,18 +122,4 @@ public class BlobExchangeServiceImpl implements ExchangeService {
         return Optional.empty();
     }
 
-    @Override
-    public void subscribeOnOrderUpdate(OrderUpdateListener listener) {
-
-    }
-
-    @Override
-    public void listenConnection(ConnectionListener listener) {
-
-    }
-
-    @Override
-    public void subscribeOnMarketData(MarketDataListener listener, CryptoPair symbol) {
-
-    }
 }

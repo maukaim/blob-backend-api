@@ -8,5 +8,5 @@ maukaim:
 
 cryptohub:
   plugins:
-    repository: #${FAKE_ENV_VAR} if variable settled #/Users/julienelkaim/Desktop/plugins
+    repository:  /Users/julienelkaim/Desktop/plugins #${FAKE_ENV_VAR} if variable settled
 

@@ -26,7 +26,7 @@
         <module>cryptohub-plugins-annotation-processor</module>
         <module>cryptohub-plugins-starter</module>
 
-        <module>cryptohub-exchange-gemini</module>
+        <module>cryptohub-exchange-default</module>
         <module>cryptohub-swagger</module>
         <module>maven-archetypes/plugin-quickstart</module>
 

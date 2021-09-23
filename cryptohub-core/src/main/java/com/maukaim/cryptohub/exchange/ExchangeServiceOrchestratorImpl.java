@@ -30,14 +30,14 @@ import java.util.stream.Collectors;
 public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestrator, PluginLifeCycleListener {
     private ExchangeServiceFactory factory;
     private PluginService pluginService;
-    private ExchangeDataDispatcher dataSender;
+    private ExchangeStreamer dataSender;
 
     private Map<String, ExchangeWrapper> wrappersCached = Maps.newConcurrentMap();
 
     public ExchangeServiceOrchestratorImpl(
             @Autowired ExchangeServiceFactory factory,
             @Autowired PluginService pluginService,
-            @Autowired ExchangeDataDispatcher sender) {
+            @Autowired ExchangeStreamer sender) {
         this.pluginService = pluginService;
         this.factory = factory;
         this.dataSender = sender;
@@ -65,9 +65,10 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
         this.wrappersCached.clear();
     }
 
-    private List<ModuleProvider<? extends ExchangeService>> getAllModuleProviders(){
+    private List<ModuleProvider<? extends ExchangeService>> getAllModuleProviders() {
         return this.pluginService.getProviders(ExchangeService.class);
     }
+
     @Override
     public List<ModuleInfo> getAvailableExchangesInfo() {
         return this.getAllModuleProviders().stream()

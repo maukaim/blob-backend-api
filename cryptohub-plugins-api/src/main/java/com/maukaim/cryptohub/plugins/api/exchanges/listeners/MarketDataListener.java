@@ -8,5 +8,5 @@ import java.util.List;
  * Listener to receive MarketData live
  */
 public interface MarketDataListener {
-    void onMarketData(List<MarketData> data);
+    void onMarketData(MarketData data);
 }

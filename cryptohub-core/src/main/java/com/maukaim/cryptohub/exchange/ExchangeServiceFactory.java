@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ExchangeServiceFactory extends AbstractModuleFactory<ExchangeService> {
 
-    ExchangeWrapper wrap(ExchangeService service, ConnectionParameters parameters, ExchangeDataDispatcher sender) {
+    ExchangeWrapper wrap(ExchangeService service, ConnectionParameters parameters, ExchangeStreamer sender) {
         return new ExchangeWrapper(service, parameters, sender);
     }
 }

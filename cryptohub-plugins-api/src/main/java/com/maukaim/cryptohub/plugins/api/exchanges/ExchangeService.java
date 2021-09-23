@@ -27,7 +27,8 @@ import java.util.Set;
  *
  */
 public interface ExchangeService extends Module {
-    void setExchangeListener(ExchangeServiceListener listener);
+    //TODO: Replace by an Akka system ?
+    void setExchangeServiceListener(ExchangeServiceListener listener);
 
     void connect(ConnectionParameters connectionParameters) throws ExchangeConnectionException;
     void disconnect();

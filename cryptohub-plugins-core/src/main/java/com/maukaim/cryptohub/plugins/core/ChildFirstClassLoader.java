@@ -44,10 +44,8 @@ public class ChildFirstClassLoader extends URLClassLoader {
     public Class<?> loadClass(String className) throws ClassNotFoundException {
         synchronized (getClassLoadingLock(className)) {
             if (className.startsWith(JAVA_PACKAGE_PREFIX) || className.startsWith(APP_PACKAGE_PREFIX)) {
-                log.info("The class {} to be loaded IS from the application.", className);
                 return getParent().loadClass(className);
             }
-            log.info("The class {} to be loaded IS NOT from the application.", className);
 
             Class<?> loadedClass = findLoadedClass(className);
             return Objects.nonNull(loadedClass) ? loadedClass : this.parentLastLoadClass(className);
@@ -66,7 +64,6 @@ public class ChildFirstClassLoader extends URLClassLoader {
 
     @Override
     public URL getResource(String name) {
-        log.info("DEBUG:: Received request to load resource '{}'", name);
         URL resource = findResource(name);
         return Objects.nonNull(resource) ? resource : super.getResource(name);
     }

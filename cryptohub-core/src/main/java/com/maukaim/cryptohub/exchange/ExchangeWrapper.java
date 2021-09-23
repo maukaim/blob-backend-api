@@ -7,25 +7,27 @@ import com.maukaim.cryptohub.plugins.api.exchanges.model.ConnectionParameters;
 import com.maukaim.cryptohub.plugins.api.market.model.MarketData;
 import com.maukaim.cryptohub.plugins.api.order.Order;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.UUID;
 
 @Data
+@Slf4j
 public class ExchangeWrapper implements ExchangeServiceListener {
     private String id;
     private ExchangeService service;
     private ConnectionParameters connectionParametersCached;
-    private ExchangeDataDispatcher exchangeDataDispatcher;
+    private ExchangeStreamer streamer;
 
 
-    public ExchangeWrapper(ExchangeService service, ConnectionParameters connectionParameters, ExchangeDataDispatcher sender) {
+    public ExchangeWrapper(ExchangeService service, ConnectionParameters connectionParameters,
+                           ExchangeStreamer streamer) {
         this.id = UUID.randomUUID().toString();
         this.service = service;
         this.connectionParametersCached = connectionParameters;
-        this.exchangeDataDispatcher = sender;
-
-        this.service.setExchangeListener(this);
+        this.streamer = streamer;
+        this.service.setExchangeServiceListener(this);
         // When the persistence will be added, add a repository here to persist states of managers
     }
 
@@ -46,12 +48,13 @@ public class ExchangeWrapper implements ExchangeServiceListener {
 
 
     @Override
-    public void onMarketData(List<MarketData> data) {
-        this.exchangeDataDispatcher.send();
+    public void onMarketData(MarketData data) {
+        log.info("Received ! {}", data);
+        this.streamer.streamMarketData(this.id, data);
     }
 
     @Override
     public void onOrderUpdate(Order order) {
-
+        this.streamer.streamOrderUpdate(this.id, order);
     }
 }

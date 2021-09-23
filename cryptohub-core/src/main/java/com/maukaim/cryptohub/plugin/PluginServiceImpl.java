@@ -148,8 +148,6 @@ public class PluginServiceImpl implements PluginService {
 
     @Override
     public StatusChangeResult stop(String pluginId) {
-        log.info("DEBUG::: On va STOP le pluginId");
-
         Plugin plugin = this.get(pluginId);
         return this.changeStatus(plugin, PluginStatus.DISABLED, (plg) -> plg.getStatus().canBeStopped());
 

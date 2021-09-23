@@ -1,9 +1,7 @@
 package com.maukaim.cryptohub.web;
 
-import com.maukaim.cryptohub.web.view.ModuleInfoView;
-import com.maukaim.cryptohub.web.view.ModuleInfoViewFactory;
-import com.maukaim.cryptohub.exchange.ExchangeWrapper;
 import com.maukaim.cryptohub.exchange.ExchangeServiceOrchestrator;
+import com.maukaim.cryptohub.exchange.ExchangeWrapper;
 import com.maukaim.cryptohub.plugins.api.exchanges.ExchangeService;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.ExchangeConnectionException;
 import com.maukaim.cryptohub.plugins.api.exchanges.exception.OrderTypeNotFoundException;
@@ -14,15 +12,13 @@ import com.maukaim.cryptohub.plugins.api.order.Order;
 import com.maukaim.cryptohub.plugins.api.order.OrderParameter;
 import com.maukaim.cryptohub.plugins.core.model.module.ModuleInfo;
 import com.maukaim.cryptohub.plugins.core.model.module.ModuleProvider;
+import com.maukaim.cryptohub.web.view.ModuleInfoView;
+import com.maukaim.cryptohub.web.view.ModuleInfoViewFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,30 +27,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExchangeController {
 
-//    private final SseService sseService;
     private final ExchangeServiceOrchestrator exchangeOrchestrator;
 
     public ExchangeController(
-//            @Qualifier("Exchange") SseService sseService,
-            ExchangeServiceOrchestrator exchangeOrchestrator) {
-//        this.sseService = sseService;
+            @Autowired ExchangeServiceOrchestrator exchangeOrchestrator) {
         this.exchangeOrchestrator = exchangeOrchestrator;
     }
-
-//    @GetMapping(path = "/open-sse-channel", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-//    public SseEmitter streamFlux(@RequestParam String uuid) {
-//        SseEmitter sseEmitter = new SseEmitter(Duration.ofSeconds(5).toMillis());
-//        sseService.addSseEmitter(uuid, sseEmitter);
-//
-//        sseEmitter.onCompletion(() -> {
-//            synchronized (new Object()) {
-//                sseService.removeSseEmitter(uuid);
-//            }
-//        });
-//        sseEmitter.onTimeout(sseEmitter::complete);
-//
-//        return sseEmitter;
-//    }
 
 
     @GetMapping(value = "/")
