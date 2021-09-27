@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.maukaim.opensource</groupId>
-    <artifactId>cryptohub</artifactId>
+    <artifactId>blob</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
-    <name>Cryptohub</name>
+    <name>Blob</name>
 
     <properties>
         <revision>1.0.12-SNAPSHOT</revision>
@@ -19,22 +19,22 @@
     </properties>
 
     <modules>
-        <module>cryptohub-core</module>
-        <module>cryptohub-plugins-core</module>
+        <module>blob-core</module>
+        <module>blob-plugins-core</module>
 
-        <module>cryptohub-plugins-api</module>
-        <module>cryptohub-plugins-annotation-processor</module>
-        <module>cryptohub-plugins-starter</module>
+        <module>blob-plugins-api</module>
+        <module>blob-plugins-annotation-processor</module>
+        <module>blob-plugins-starter</module>
 
-        <module>cryptohub-exchange-gemini</module>
-        <module>cryptohub-swagger</module>
-        <module>maven-archetypes/plugin-quickstart</module>
+        <module>blob-exchange-default</module>
+        <module>blob-swagger</module>
+        <module>maven-archetypes/blob-plugin-quickstart</module>
 
     </modules>
 
 
     <!--    Meta data for Maven Central -->
-    <url>https://github.com/maukaim/cryptohub-backend-api</url>
+    <url>https://github.com/maukaim/blob-backend-api</url>
     <licenses>
         <license>
             <name>MIT License</name>
@@ -51,9 +51,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/maukaim/cryptohub-backend-api.git</connection>
-        <developerConnection>scm:git:ssh://github.com:maukaim/cryptohub-backend-api.git</developerConnection>
-        <url>http://github.com/maukaim/cryptohub-backend-api/tree/master</url>
+        <connection>scm:git:git://github.com/maukaim/blob-backend-api.git</connection>
+        <developerConnection>scm:git:ssh://github.com:maukaim/blob-backend-api.git</developerConnection>
+        <url>http://github.com/maukaim/blob-backend-api/tree/master</url>
     </scm>
 
 
