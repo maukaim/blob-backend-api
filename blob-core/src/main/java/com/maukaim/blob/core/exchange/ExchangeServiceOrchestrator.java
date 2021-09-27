@@ -16,7 +16,6 @@ public interface ExchangeServiceOrchestrator {
 
     List<ModuleInfo> getAvailableExchangesInfo();
     Optional<ModuleProvider<? extends ExchangeService>> getExchangeProvider(String pluginId, String exchangeName);
-    //    pk ici pas ConnectionParameters??
     Map<String, List<ConnectionParameter>> getConnectionParameters(ModuleProvider<? extends ExchangeService> exchangeProvider);
     ExchangeWrapper connect(ModuleProvider<? extends ExchangeService> mp,
                             ConnectionParameters connectionParameters)
