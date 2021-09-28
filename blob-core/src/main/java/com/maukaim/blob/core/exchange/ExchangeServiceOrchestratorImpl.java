@@ -16,13 +16,12 @@ import com.maukaim.blob.plugins.core.model.module.ModuleInfo;
 import com.maukaim.blob.plugins.core.model.module.ModuleProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -77,11 +76,14 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
     }
 
     @Override
-    public Map<String, List<ConnectionParameter>> getConnectionParameters(ModuleProvider<? extends ExchangeService> exchangeProvider) {
+    public Map<String, List<ConnectionParameter>> getConnectionParameters(@NonNull ModuleProvider<? extends ExchangeService> exchangeProvider) {
 
         Class<? extends PreProcess> preProcess = exchangeProvider.getPreProcess();
-        ExchangeServicePreProcess preProcessor = this.factory.buildPreProcess(preProcess, ExchangeServicePreProcess.class);
-        return preProcessor.getConnectionParameters();
+        if(preProcess != null){
+            ExchangeServicePreProcess preProcessor = this.factory.buildPreProcess(preProcess, ExchangeServicePreProcess.class);
+            return Objects.requireNonNull(preProcessor.getConnectionParameters());
+        }
+        return Collections.emptyMap();
     }
 
     @Override
