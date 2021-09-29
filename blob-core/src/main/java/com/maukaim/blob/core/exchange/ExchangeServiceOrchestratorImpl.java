@@ -14,9 +14,9 @@ import com.maukaim.blob.plugins.core.model.Plugin;
 import com.maukaim.blob.plugins.core.model.PluginStatus;
 import com.maukaim.blob.plugins.core.model.module.ModuleInfo;
 import com.maukaim.blob.plugins.core.model.module.ModuleProvider;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -79,7 +79,7 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
     public Map<String, List<ConnectionParameter>> getConnectionParameters(@NonNull ModuleProvider<? extends ExchangeService> exchangeProvider) {
 
         Class<? extends PreProcess> preProcess = exchangeProvider.getPreProcess();
-        if(preProcess != null){
+        if (preProcess != null) {
             ExchangeServicePreProcess preProcessor = this.factory.buildPreProcess(preProcess, ExchangeServicePreProcess.class);
             return Objects.requireNonNull(preProcessor.getConnectionParameters());
         }
@@ -87,9 +87,9 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
     }
 
     @Override
-    public ExchangeWrapper connect(ModuleProvider<? extends ExchangeService> mp,
-                                   ConnectionParameters connectionParameters) throws ExchangeConnectionException {
-        ExchangeService exchangeService = this.factory.build(mp);
+    public ExchangeWrapper connect(@NonNull ModuleProvider<? extends ExchangeService> mp,
+                                   @NonNull ConnectionParameters connectionParameters) throws ExchangeConnectionException {
+        ExchangeService exchangeService = Objects.requireNonNull(this.factory.build(mp));
         ExchangeWrapper wrapper = this.factory.wrap(exchangeService, connectionParameters, this.dataSender);
 
         exchangeService.connect(connectionParameters);
