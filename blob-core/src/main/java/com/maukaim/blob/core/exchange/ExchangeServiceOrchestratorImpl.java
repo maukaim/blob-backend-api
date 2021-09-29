@@ -116,21 +116,25 @@ public class ExchangeServiceOrchestratorImpl implements ExchangeServiceOrchestra
 
     @Override
     public void beforeStatusChange(Plugin plugin, PluginStatus current, PluginStatus next) throws PluginLifeCycleException {
+        //TODO: TDD
         //TODO: If error or stopping, send warning message to the WrapperId listeners. Possible to block until response of all or timeout?
     }
 
     @Override
     public void beforeDestroy(Plugin plugin) throws PluginLifeCycleException {
+        //TODO: TDD
         //TODO: If destroying, send warning message to the WrapperId listeners. Possible to block until response of all or timeout?
     }
 
     @Override
     public void afterStatusChanged(Plugin plugin, PluginStatus old, PluginStatus current) {
+        //TODO: TDD
         //TODO: Destroy wrapper of Exchange Modules using it
     }
 
     @Override
     public void afterDestroy(Plugin plugin) {
+        //TODO: TDD
         //TODO: Destroy wrapper of exchange Modules using it.
     }
 }

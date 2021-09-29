@@ -217,7 +217,7 @@ public class ExchangeServiceOrchestratorImplTest {
         Mockito.when(this.factory.build(Mockito.any()))
                 .thenReturn(exchangeService);
         ExchangeWrapper exchangeWrapperFactoryWillCreate = new ExchangeWrapper(exchangeService, connectionParameters, streamer);
-        Mockito.when(this.factory.wrap(Mockito.any(),Mockito.any(),Mockito.any()))
+        Mockito.when(this.factory.wrap(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(exchangeWrapperFactoryWillCreate);
 
         ExchangeWrapper exchangeWrapperReturned = Assertions.assertDoesNotThrow(() -> this.orchestrator.connect(moduleProvider, connectionParameters));
@@ -225,7 +225,7 @@ public class ExchangeServiceOrchestratorImplTest {
         Mockito.verify(this.factory, Mockito.times(1))
                 .build(Mockito.any());
         Mockito.verify(this.factory, Mockito.times(1))
-                .wrap(Mockito.any(),Mockito.any(),Mockito.any());
+                .wrap(Mockito.any(), Mockito.any(), Mockito.any());
 
         Assertions.assertSame(exchangeService, exchangeWrapperReturned.getService());
     }
@@ -241,7 +241,7 @@ public class ExchangeServiceOrchestratorImplTest {
         Mockito.when(this.factory.build(Mockito.any()))
                 .thenReturn(exchangeService);
         ExchangeWrapper exchangeWrapperFactoryWillCreate = new ExchangeWrapper(exchangeService, connectionParameters, streamer);
-        Mockito.when(this.factory.wrap(Mockito.any(),Mockito.any(),Mockito.any()))
+        Mockito.when(this.factory.wrap(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(exchangeWrapperFactoryWillCreate);
 
         Assertions.assertDoesNotThrow(() -> {
@@ -253,7 +253,7 @@ public class ExchangeServiceOrchestratorImplTest {
         Mockito.verify(this.factory, Mockito.times(1))
                 .build(Mockito.any());
         Mockito.verify(this.factory, Mockito.times(1))
-                .wrap(Mockito.any(),Mockito.any(),Mockito.any());
+                .wrap(Mockito.any(), Mockito.any(), Mockito.any());
 
 
     }
@@ -267,7 +267,7 @@ public class ExchangeServiceOrchestratorImplTest {
         Mockito.when(this.factory.build(Mockito.any()))
                 .thenReturn(exchangeService);
         ExchangeWrapper exchangeWrapperFactoryWillCreate = new ExchangeWrapper(exchangeService, connectionParameters, streamer);
-        Mockito.when(this.factory.wrap(Mockito.any(),Mockito.any(),Mockito.any()))
+        Mockito.when(this.factory.wrap(Mockito.any(), Mockito.any(), Mockito.any()))
                 .thenReturn(exchangeWrapperFactoryWillCreate);
 
         ExchangeWrapper exchangeWrapperReturned = Assertions.assertDoesNotThrow(() -> this.orchestrator.connect(moduleProvider, connectionParameters));
@@ -275,17 +275,62 @@ public class ExchangeServiceOrchestratorImplTest {
         Mockito.verify(this.factory, Mockito.times(1))
                 .build(Mockito.any());
         Mockito.verify(this.factory, Mockito.times(1))
-                .wrap(Mockito.any(),Mockito.any(),Mockito.any());
+                .wrap(Mockito.any(), Mockito.any(), Mockito.any());
 
         String wrapperId = exchangeWrapperReturned.getId();
         Optional<ExchangeWrapper> optionalWrapper = this.orchestrator.getExchange(wrapperId);
-        ExchangeWrapper wrapperFoundInCache = Assertions.assertDoesNotThrow(()->
-                optionalWrapper.orElseThrow(()->
+        ExchangeWrapper wrapperFoundInCache = Assertions.assertDoesNotThrow(() ->
+                optionalWrapper.orElseThrow(() ->
                         new RuntimeException("No Wrapper found in cache"))
         );
         Assertions.assertSame(exchangeWrapperReturned, wrapperFoundInCache,
                 "Should the ExchangeWrapper be cached and user app should be able to withdraw it.");
 
     }
+
+    @Test
+    public void should_getExchange_return_empty_optional_if_no_wrappers_at_all() {
+        Optional<ExchangeWrapper> exchange = this.orchestrator.getExchange("randomId");
+        Assertions.assertFalse(exchange.isPresent(), "getExchange should return an optional with the wrapper inside");
+
+    }
+
+    @Test
+    public void should_getExchange_return_empty_optional_if_no_wrappers_with_id() {
+        ExchangeServiceFactory exchangeServiceFactory = new ExchangeServiceFactory();
+        ExchangeServiceFactory spyExchangeFactory = Mockito.spy(exchangeServiceFactory);
+        ExchangeService serviceToReturn = Mockito.mock(ExchangeService.class);
+        Mockito.doReturn(serviceToReturn).when(spyExchangeFactory).build(Mockito.any());
+
+        ExchangeServiceOrchestratorImpl tmpOrchestrator = new ExchangeServiceOrchestratorImpl(spyExchangeFactory, pluginService, streamer);
+
+        ModuleProvider<? extends ExchangeService> moduleProvider = moduleProvider("ignored", "ignored");
+        ConnectionParameters connectionParameters = ConnectionParameters.builder().build();
+
+        Assertions.assertDoesNotThrow(() -> tmpOrchestrator.connect(moduleProvider, connectionParameters));
+        Optional<ExchangeWrapper> exchange = tmpOrchestrator.getExchange("randomIdNotWorking");
+        Assertions.assertFalse(exchange.isPresent(), "getExchange should return an optional with the wrapper inside");
+    }
+
+    @Test
+    public void should_getExchange_return_optional_with_wrapper_inside_when_id_available() {
+        ExchangeServiceFactory exchangeServiceFactory = new ExchangeServiceFactory();
+        ExchangeServiceFactory spyExchangeFactory = Mockito.spy(exchangeServiceFactory);
+        ExchangeService serviceToReturn = Mockito.mock(ExchangeService.class);
+        Mockito.doReturn(serviceToReturn).when(spyExchangeFactory).build(Mockito.any());
+
+
+        ExchangeServiceOrchestratorImpl tmpOrchestrator = new ExchangeServiceOrchestratorImpl(spyExchangeFactory, pluginService, streamer);
+
+        ModuleProvider<? extends ExchangeService> moduleProvider = moduleProvider("ignored", "ignored");
+        ConnectionParameters connectionParameters = ConnectionParameters.builder().build();
+
+        ExchangeWrapper exchangeWrapper = Assertions.assertDoesNotThrow(() -> tmpOrchestrator.connect(moduleProvider, connectionParameters));
+
+        Optional<ExchangeWrapper> exchange = tmpOrchestrator.getExchange(exchangeWrapper.getId());
+        Assertions.assertTrue(exchange.isPresent(), "getExchange should return an optional with the wrapper inside");
+
+    }
+
 
 }
