@@ -1,4 +1,6 @@
 # Blob Project  
 
-Blob is a plaftorm for the cryptocurrencies world. Modular and extensible, With Blob, user manage its crypto univers: 
-trade on favorite exchange, have access to important news channels, browse NFT markets, aso...
+Fun side project ! Trading platform, customizable (plugin system) and broker neutral.
+
+
+Project Goal: Provide users with a highly customizable tool to trade, create bots and keep track of relevant informations in a single place.
